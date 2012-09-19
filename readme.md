@@ -3,7 +3,7 @@ WordPress Backup Ant Script
 
 This is a simple Ant script to make backups of a WordPress blog in a remote machine (possibly running Windows).
 
-Basically, it will connect to your server, make a copy of the WordPress directory, make a dump of the MySql database, zip everything, then download the resulting file. The final zip is named with the timestamp, so you can easily find backups latter.
+Basically, it will connect to your server, make a copy of the WordPress directory, make a dump of the MySql database, zip everything, and then download the resulting file. The final zip is named with the timestamp, so you can easily find backups latter.
 
 
 Pre-Requisites
@@ -27,7 +27,7 @@ Configuration
 
 All the configuration you need to do is on the *example.properties* file. Please open it, and complete each value with your server configuration.
 
-Some of these values are optional, and you may leave then commented (with the # at the begining of the line).
+Some of these values are optional, and you may leave then commented (with the # at the beginning of the line).
 
 You don't need to keep the name *example.properties*, change the file name as you like. You can also save it on a directory different than the one that you saved the build.xml file. Just take note of the name and the path to use latter.
 
@@ -45,3 +45,18 @@ If you renamed or moved the example.properties file, replace it in the line abov
 Download
 --------
 
+[WordPress Backup Ant Script](https://github.com/lgfischer/wordpress-backup-ant-script/zipball/master "Download WordPress Backup Ant Script")
+
+
+TODOs
+-----
+
+Installation:
+- Remove the need to manually download JSch by adding the .jar on a "lib" directory and referencing it on the build.xml file.
+
+Configuration:
+- Add support for password based login (for those that don't know how to set key files). This **should not** allow the user to write the password on the build.xml or on the .properties file (as it is easy to let anyone copy the password);
+- Make the default value of the db.address equals to the server.host if not present.
+
+Execution:
+- Automatically pick the .properties file if there is only one in the current directory.
