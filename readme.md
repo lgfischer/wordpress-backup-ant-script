@@ -17,9 +17,9 @@ Pre-Requisites
 Installation
 ------------
 
-- Install [Ant](http://ant.apache.org/ "Apache Ant") on your local machine. It was tested with the version 1.8.4, but any version above 1.8 should work. The location where Ant is installed will be called $ANT_HOME from now on;
+- Install [Ant](http://ant.apache.org/ "Apache Ant") on your local machine. It was tested with the [version 1.8.4](http://archive.apache.org/dist/ant/binaries/apache-ant-1.8.4-bin.zip "Apache Ant 1.8.4"), but any version above 1.8 should work. The location where Ant is installed will be called $ANT_HOME from now on;
 - Download the [JSch jar](http://www.jcraft.com/jsch/index.html "JSch - Java Secure Channel") and save it on the $ANT_HOME/lib directory. Is was tested with the [JSch version 0.1.48](http://sourceforge.net/projects/jsch/files/jsch.jar/0.1.48/jsch-0.1.48.jar/download "Download JSch version 0.1.48");
-- Download this script and paste it anywhere on your local machine.
+- [Download this script](https://github.com/lgfischer/wordpress-backup-ant-script/zipball/master "Download WordPress Backup Ant Script") and paste it anywhere on your local machine.
 
 
 Configuration
@@ -45,7 +45,7 @@ If you renamed or moved the example.properties file, replace it in the line abov
 Download
 --------
 
-[WordPress Backup Ant Script](https://github.com/lgfischer/wordpress-backup-ant-script/zipball/master "Download WordPress Backup Ant Script")
+[Download WordPress Backup Ant Script as a zip file](https://github.com/lgfischer/wordpress-backup-ant-script/zipball/master "Download WordPress Backup Ant Script")
 
 
 TODOs
