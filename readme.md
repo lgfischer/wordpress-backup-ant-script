@@ -1,9 +1,11 @@
 WordPress Backup Ant Script
 ===========================
 
-This is a simple Ant script to make backups of a WordPress blog in a remote machine (possibly running Windows).
+This is a simple Ant script to make backups of a WordPress blog in a remote machine.
 
 Basically, it will connect to your server, make a copy of the WordPress directory, make a dump of the MySql database, zip everything, and then download the resulting file. The final zip is named with the timestamp, so you can easily find backups latter.
+
+I wrote it to automate remote backups of [my own blog](http://leonardofischer.com/). It runs on a Linux server, but I would like to save the backups in a external machine running Windows.
 
 
 Pre-Requisites
