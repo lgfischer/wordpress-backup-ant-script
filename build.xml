@@ -1,0 +1,46 @@
+<project name="WordpressBackup" default="backup" basedir=".">
+
+    <target name="backup">
+
+        <fail message="${line.separator}Wordpress BackUp Tool${line.separator}type:${line.separator}ant -Dproperties={properties file}">
+            <condition>
+                <not><isset property="properties"/></not>
+            </condition>
+        </fail>
+
+        <property file="${properties}"/>
+
+        <condition property="backup.remotedir" value="$HOME/wordpress_backup">
+            <not><isset property="backup.remotedir"/></not>
+        </condition>
+        <condition property="backup.dir" value="${basedir}">
+            <not><isset property="backup.dir"/></not>
+        </condition>
+        <condition property="server.passphrase" value="">
+            <not><isset property="server.passphrase"/></not>
+        </condition>
+
+        <tstamp><format property="backup.timestamp" pattern="yyyy-MM-dd_HH-mm" /></tstamp>
+        <property name="backup.remotedirtmp" value="${backup.remotedir}/${backup.timestamp}"/>
+        <property name="backup.sqlname" value="${db.name}_${backup.timestamp}.sql"/>
+        <property name="backup.wordpres" value="${backup.remotedirtmp}/wordpress"/>
+        <property name="backup.filename" value="${backup.remotedir}/${backup.name}_${backup.timestamp}.zip"/>
+
+        <mkdir dir="${backup.dir}"/>
+        <sshexec
+            host="${server.host}" username="${server.username}"
+            keyfile="${server.keyfile}" passphrase="${server.passphrase}" trust="true"
+            command="
+                mkdir -p &quot;${backup.remotedirtmp}&quot;;
+                mysqldump -h ${db.address} -u ${db.username} -p${db.password} --result-file=&quot;${backup.remotedirtmp}/${backup.sqlname}&quot; ${db.name};
+                cp -r &quot;${wordpress.dir}&quot; &quot;${backup.wordpres}&quot;;
+                cd &quot;${backup.remotedirtmp}&quot;;
+                zip -9 -q -r -T &quot;${backup.filename}&quot; &quot;${backup.sqlname}&quot; wordpress;
+                rm -r &quot;${backup.remotedirtmp}&quot;;"/>
+        <scp
+            host="${server.host}" username="${server.username}"
+            keyfile="${server.keyfile}" passphrase="${server.passphrase}" trust="true"
+            file="${server.username}@${server.host}:${backup.filename}" localTodir="${backup.dir}"/>
+    </target>
+
+</project>
