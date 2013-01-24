@@ -1,32 +1,83 @@
-<project name="WordpressBackup" default="backup" basedir=".">
+<project name="WordpressBackup" default="help" basedir=".">
 
+    <!-- the default Help target -->
+    <target name="help">
+<echo>Wordpress BackUp Tool
+
+Type
+
+$> ant backup
+
+to backup a blog. Instead of the default 'backup.properties' file, you may use a custom one by typing
+
+$> ant -Dproperties=custom_properties_file
+
+Type
+
+$> ant properties
+
+for a help on how to file the properties file.
+</echo>
+    </target>
+
+
+
+    <!-- the properties help target -->
+    <target name="properties">
+<echo>Attributes of the properties file:
+- server.host: the host address/IP where your wordpress installation is running
+- server.username: the username used to connect to the above server
+- server.passphrase: the password to connect to the server through SSH. Note: avoid using it, because you will need to save the password in a text file, and others may read it!
+- server.keyfile: the path to a private key file that can be used to connect to that server
+- wordpress.dir: the directory where the wordpress is installed (this directory contains a wp-config.php file)
+
+- db.address: the address/IP of the MySql server. "localhost" for most cases.
+- db.name: the database name used by the MySql installation
+- db.username: the username used to connect to the database
+- db.password: the password used to connect to the database
+
+- backup.name: a string that will be used to name your backups. Default is 'wordpress_backup'
+- backup.remotedir: the directory where the backups will be saved on the remote server. If not set, the backup will not be kept in the remote server, and a temporary directory will be used.
+- backup.localdir: the directory in the local machine where the backups will be saved. Default is the current directory.</echo>
+    </target>
+
+
+    <!-- the actual backup target -->
     <target name="backup">
 
-        <fail message="${line.separator}Wordpress BackUp Tool${line.separator}type:${line.separator}ant -Dproperties={properties file}">
-            <condition>
-                <not><isset property="properties"/></not>
-            </condition>
-        </fail>
+        <condition property="properties" value="backup.properties">
+            <not><isset property="properties"/></not>
+        </condition>
 
         <property file="${properties}"/>
 
-        <condition property="backup.remotedir" value="$HOME/wordpress_backup">
+        <tstamp><format property="backup.timestamp" pattern="yyyy-MM-dd_HH-mm" /></tstamp>
+
+        <condition property="backup.name" value="wordpress_backup">
+            <not><isset property="backup.name"/></not>
+        </condition>
+        <condition property="backup.keepremote" value="true">
+            <isset property="backup.remotedir"/>
+        </condition>
+        <condition property="backup.keepremote" value="false">
             <not><isset property="backup.remotedir"/></not>
         </condition>
-        <condition property="backup.dir" value="${basedir}">
-            <not><isset property="backup.dir"/></not>
+        <condition property="backup.remotedir" value="/tmp/${backup.name}_${backup.timestamp}">
+            <not><isset property="backup.remotedir"/></not>
+        </condition>
+        <condition property="backup.localdir" value="${basedir}">
+            <not><isset property="backup.localdir"/></not>
         </condition>
         <condition property="server.passphrase" value="">
             <not><isset property="server.passphrase"/></not>
         </condition>
 
-        <tstamp><format property="backup.timestamp" pattern="yyyy-MM-dd_HH-mm" /></tstamp>
         <property name="backup.remotedirtmp" value="${backup.remotedir}/${backup.timestamp}"/>
         <property name="backup.sqlname" value="${db.name}_${backup.timestamp}.sql"/>
         <property name="backup.wordpres" value="${backup.remotedirtmp}/wordpress"/>
         <property name="backup.filename" value="${backup.remotedir}/${backup.name}_${backup.timestamp}.zip"/>
 
-        <mkdir dir="${backup.dir}"/>
+        <mkdir dir="${backup.localdir}"/>
         <sshexec
             host="${server.host}" username="${server.username}"
             keyfile="${server.keyfile}" passphrase="${server.passphrase}" trust="true"
@@ -40,7 +91,11 @@
         <scp
             host="${server.host}" username="${server.username}"
             keyfile="${server.keyfile}" passphrase="${server.passphrase}" trust="true"
-            file="${server.username}@${server.host}:${backup.filename}" localTodir="${backup.dir}"/>
+            file="${server.username}@${server.host}:${backup.filename}" localTodir="${backup.localdir}"/>
+        <sshexec
+            host="${server.host}" username="${server.username}"
+            keyfile="${server.keyfile}" passphrase="${server.passphrase}" trust="true"
+            command="if ! ${backup.keepremote} ; then rm -r &quot;${backup.remotedir}&quot;; fi"/>
     </target>
 
 </project>
