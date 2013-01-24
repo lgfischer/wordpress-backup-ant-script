@@ -45,6 +45,12 @@ If you renamed or moved the backup.properties file, replace it in the line above
 
 	ant backup -Dproperties="/path/to/your properties directory/your.properties"
 
+You can just type
+
+	ant
+
+for a list of all possible targets.
+
 Download
 --------
 
