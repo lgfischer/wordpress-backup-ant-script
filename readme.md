@@ -27,22 +27,23 @@ Installation
 Configuration
 -------------
 
-All the configuration you need to do is on the *example.properties* file. Please open it, and complete each value with your server configuration.
+All the configuration you need to do is on the *backup.properties* file. Please open it, and complete each value with your server configuration.
 
 Some of these values are optional, and you may leave then commented (with the # at the beginning of the line).
 
-You don't need to keep the name *example.properties*, change the file name as you like. You can also save it on a directory different than the one that you saved the build.xml file. Just take note of the name and the path to use latter.
+You don't need to keep the name *backup.properties*, change the file name as you like. For example, if you have several blogs that you want to backup, you may create one file for each blog, with names "your_blog.properties". You can also save it on a directory different than the one that you saved the build.xml file. Just take note of the name and the path to use latter.
+
 
 Execution
 ---------
 
 Open your terminal/console window, go to the directory where you saved the build.xml script and type
 
-	ant -Dproperties=example.properties
+	ant backup
 
-If you renamed or moved the example.properties file, replace it in the line above. If the path to your properties file has spaces, write it with quotation marks *"*, like this:
+If you renamed or moved the backup.properties file, replace it in the line above. If the path to your properties file has spaces, write it with quotation marks *"*, like this:
 
-	ant -Dproperties="/path/to/your properties directory/your.properties"
+	ant backup -Dproperties="/path/to/your properties directory/your.properties"
 
 Download
 --------
@@ -57,8 +58,5 @@ Installation:
 - Remove the need to manually download JSch by adding the .jar on a "lib" directory and referencing it on the build.xml file.
 
 Configuration:
-- Add support for password based login (for those that don't know how to set key files). This **should not** allow the user to write the password on the build.xml or on the .properties file (as it is easy to let anyone copy the password);
+- Add support for an password interactive based login (for those that don't know how to set key files). This **should not** allow the user to write the password on the build.xml or on the .properties file (as it is easy to let anyone copy the password);
 - Make the default value of the db.address equals to the server.host if not present.
-
-Execution:
-- Automatically pick the .properties file if there is only one in the current directory.
