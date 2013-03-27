@@ -4,19 +4,14 @@
     <target name="help">
 <echo>Wordpress BackUp Tool
 
-Type
-
-$> ant backup
-
-to backup a blog. Instead of the default 'backup.properties' file, you may use a custom one by typing
-
-$> ant -Dproperties=custom_properties_file
-
-Type
-
+Before backing up your blog, you need to create a file called 'backup.properties' with some attributes. For help on how to create this file, type
 $> ant properties
 
-for a help on how to file the properties file.
+With a 'backup.properties' file created, you can backup your blog by typing
+$> ant backup
+
+If you want to use a file with a different name than 'backup.properties', you may use a custom one by typing
+$> ant -Dproperties=custom_properties_file backup
 </echo>
     </target>
 
